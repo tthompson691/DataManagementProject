@@ -1,4 +1,4 @@
-import os, pprint, csv
+import os, csv
 from datetime import datetime
 
 
@@ -13,13 +13,10 @@ def main():
     # check for an old scan log for later comparison
     oldDataFound, oldData = find_old_log('D:\SYSTEM SCAN LOGS')
 
-
     logFile = open(scanFile + ".csv", 'x')
 
     # create headers for .csv file
     logFile.write('ScanDate,Directory,Size\n')
-
-    # logFile.write(str('DATE SCANNED: ' + str(scanDate) + '\n'))
 
     # walk through the given directory and check the size of both the directory, and ALL
     # subdirectories
@@ -35,6 +32,8 @@ def main():
         logFile.write(str(str(scanFile) + ',' + dirpath + ',' + str(size) + '\n'))
 
         logFileDir = str('D:\SYSTEM SCAN LOGS\\' + scanFile + '.csv')
+
+    logFile.close()
 
     with open(logFileDir, 'r') as newData, open(oldData, 'r') as oldData:
 
@@ -89,18 +88,15 @@ def compare_data(newLog, oldLog):
         oldDirs.append(oldLogData)
 
     # now compare data between the two dict lists to determine what's changed
-    changed = False
 
     for newDir in newDirs:
         for oldDir in oldDirs:
-            dirMatch = False
 
             if newDir['Directory'] == oldDir['Directory']:
                 # we have linked dirs. now check to see if their size has changed
-                dirMatch = True
 
                 if newDir['Size'] != oldDir['Size']:
-                    changed = True
+
                     print(newDir['Directory'], 'has changed in size! It used to be', oldDir['Size'],
                           'bytes, now it\'s', newDir['Size'], 'bytes! Hype')
 
@@ -108,6 +104,8 @@ def compare_data(newLog, oldLog):
     # unique meaning either a dir that has been deleted since last scan, or a new dir added since last scan
 
     find_unique_dirs(oldDirs, newDirs)
+    newLog.close()
+    oldLog.close()
 
 def find_old_log(dir):
 
@@ -133,17 +131,14 @@ def find_unique_dirs(oldDirs, newDirs):
         if dircheck not in new_res:
             old_unmatched_dirs.append(dircheck)
 
-
     for dircheck in new_res:
         if dircheck not in old_res:
             new_unmatched_dirs.append(dircheck)
 
     print(str(old_res), '\n' + str(new_res))
 
-    print('Deleted directories:', str(old_unmatched_dirs))
+    print('Deleted/moved directories:', str(old_unmatched_dirs))
     print('Added directories:', str(new_unmatched_dirs))
-
-
 
 
 main()
