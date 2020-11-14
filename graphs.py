@@ -1,6 +1,6 @@
 
 from matplotlib import pyplot as plt
-import re, csv, os
+import csv, os
 
 plt.style.use("fivethirtyeight")
 
@@ -81,14 +81,32 @@ def make_pie_chart(data, top_dir, scanDate):
     plt.show()
 
 
-make_pie_chart(r"D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG.csv", "D:\Music\Proyectos\Instajams", 'Nov-14-2020 __ 15h 16m 31s')
+# make_pie_chart(r"D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG.csv", "D:\Music\Proyectos\Instajams",
+#                'Nov-14-2020 __ 15h 16m 31s')
 
 
+def make_line_chart(data, top_dir):
+
+    display_vals = []
+    display_labels = []
+
+    with open(data, 'r') as data:
+        reader = csv.DictReader(data)
+        for row in reader:
+            if row["Directory"] == top_dir:
+                print(row["Directory"])
+                for item in row:
+                    display_vals.append(row[item])
+                    display_labels.append(item)
+
+    plt.plot(display_labels, display_vals)
+    plt.title("History: " + top_dir)
+    plt.xlabel('Size (bytes)')
+    plt.ylabel('Scan Date')
+    plt.show()
 
 
-
-
-
+make_line_chart(r"D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG.csv", "D:\Music\Proyectos\Instajams")
 
 
 
