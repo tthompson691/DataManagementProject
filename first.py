@@ -1,5 +1,6 @@
 import os, csv
 from datetime import datetime
+from graphs import make_pie_chart
 
 
 def main():
@@ -32,6 +33,8 @@ def main():
         logFile.write(str(str(scanFile) + ',' + dirpath + ',' + str(size) + '\n'))
 
         logFileDir = str('D:\SYSTEM SCAN LOGS\\' + scanFile + '.csv')
+
+    print(logFileDir)
 
     logFile.close()
 
@@ -106,6 +109,7 @@ def compare_data(newLog, oldLog):
     find_unique_dirs(oldDirs, newDirs)
     newLog.close()
     oldLog.close()
+
 
 def find_old_log(dir):
 
