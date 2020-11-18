@@ -1,15 +1,17 @@
 import os, csv
 from datetime import datetime
-
+import graphs
 
 def main():
 
     # first step is to check if a .csv log file exists, and if not,
     # create a new .csv file in which info obtained from the directory walk
     # will be stored
+    scanDir = 'C:'
+    scanName = scanDir.split('\\')[-1]
     logDir = 'D:\SYSTEM SCAN LOGS'
     os.chdir(logDir)
-    logName = "MASTER SYSTEM SCAN LOG.csv"
+    logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
 
     date = datetime.now()
     scanDate = date.strftime("%b-%d-%Y __ %Hh %Mm %Ss")
@@ -27,16 +29,15 @@ def main():
     # subdirectories
 
     dirSizes = {}
+    permissionErrors = 0
+    i = 0
 
-    for dirpath, dirnames, filenames in os.walk('D:\Music\Proyectos'):
-
-        os.chdir(dirpath)
-
+    for dirpath, dirnames, filenames in os.walk(scanDir):
         # calls method which will walk through the given directory and calculate
         # total size
         size = get_folder_size(dirpath)
-
         dirSizes[dirpath] = size
+
 
     # write to the CSV file
     try:
@@ -45,12 +46,10 @@ def main():
         print("Scan log is open. Close it and re-run the scanner")
         return 1
 
-    #print(dirSizes)
-
-    # with open(logFileDir, 'r') as newData, open(oldData, 'r') as oldData:
-    #
-    #     compare_data(newData, oldData)
-
+    graphs.make_pie_chart(logName, scanDir, scanDate)
+    os.chdir(logDir)
+    graphs.make_line_chart(logName, scanDir)
+    #print("Finished with" + permissionErrors + 'permission errors')
 
 def get_folder_size(dir):
     # this function will iterate through all files and subdirectories of the given directory and calculate a
@@ -60,10 +59,12 @@ def get_folder_size(dir):
     size = 0
 
     for dirpath, dirnames, filenames in os.walk(dir):
-        os.chdir(dirpath)
-
         for file in filenames:
-            size += os.stat(file).st_size
+            try:
+                filename = os.path.join(dirpath, file)
+                size += os.stat(filename).st_size
+            except OSError:
+                pass
 
     return size
 
@@ -100,7 +101,7 @@ def write_to_log(dirSizes, scanDate, logName, logDir):
 
         # append new size data to corresponding directory row
         elif curDir in dirSizes.keys() and curDir != "Directory":
-            row += str(str(dirSizes[curDir]))
+            row += str(dirSizes[curDir])
             new_rows_list.append(row)
             # now that the key has been referenced, we don't need it anymore
             # we want to use any leftover keys for next phase
@@ -115,13 +116,16 @@ def write_to_log(dirSizes, scanDate, logName, logDir):
         new_rows_list.append(str(key) + (scanCount * ",") + str(value))
         new_dirs.append(key)
 
-    print("new dirs:", new_dirs)
-    print("deleted dirs:", deleted_dirs)
+    #print("new dirs:", new_dirs)
+    #print("deleted dirs:", deleted_dirs)
 
     # write data into csv
     with open(logName, 'w') as logFile:
         for item in new_rows_list:
-            logFile.write(item + '\n')
+            try:
+                logFile.write(item + '\n')
+            except UnicodeError:
+                pass
 
 
 def count_scans(row):
@@ -134,3 +138,4 @@ def count_scans(row):
 
 
 main()
+
