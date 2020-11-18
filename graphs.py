@@ -113,5 +113,5 @@ def format_bytes(size):
 
 #make_pie_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - .csv', 'C:\\Users\\tthom', 'Nov-17-2020 __ 11h 32m 41s')
 
-make_line_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - .csv', 'C:\\')
+#make_line_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - .csv', 'C:\\')
 

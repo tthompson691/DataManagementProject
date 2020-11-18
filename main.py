@@ -7,8 +7,17 @@ def main():
     # first step is to check if a .csv log file exists, and if not,
     # create a new .csv file in which info obtained from the directory walk
     # will be stored
-    scanDir = 'C:'
-    scanName = scanDir.split('\\')[-1]
+    scanDir = 'C:\\'
+    # if top_dir is a lettered drive, its naming convention will end in a slash. But if any other folder is chosen,
+    # this isn't true. Since the log is parsed using slashes as split anchors, must account for this
+
+    if scanDir.split('\\')[-1] == '':
+        # true if passed a letter drive as top_dir
+        scanName = scanDir.split(':\\')[-2]
+    else:
+        # true if passed any directory lower than a top letter drive
+        scanName = scanDir.split('\\')[-1]
+
     logDir = 'D:\SYSTEM SCAN LOGS'
     os.chdir(logDir)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
@@ -29,13 +38,14 @@ def main():
     # subdirectories
 
     dirSizes = {}
-    permissionErrors = 0
+    totalErrors = 0
     i = 0
 
     for dirpath, dirnames, filenames in os.walk(scanDir):
         # calls method which will walk through the given directory and calculate
         # total size
-        size = get_folder_size(dirpath)
+        size, errors = get_folder_size(dirpath)
+        totalErrors += errors
         dirSizes[dirpath] = size
 
 
@@ -46,10 +56,9 @@ def main():
         print("Scan log is open. Close it and re-run the scanner")
         return 1
 
-    graphs.make_pie_chart(logName, scanDir, scanDate)
-    os.chdir(logDir)
-    graphs.make_line_chart(logName, scanDir)
-    #print("Finished with" + permissionErrors + 'permission errors')
+    print("Scan finished with " + str(totalErrors) + " errors.")
+
+    
 
 def get_folder_size(dir):
     # this function will iterate through all files and subdirectories of the given directory and calculate a
@@ -57,6 +66,7 @@ def get_folder_size(dir):
 
     # initiate size
     size = 0
+    errors = 0
 
     for dirpath, dirnames, filenames in os.walk(dir):
         for file in filenames:
@@ -64,9 +74,10 @@ def get_folder_size(dir):
                 filename = os.path.join(dirpath, file)
                 size += os.stat(filename).st_size
             except OSError:
+                errors += 1
                 pass
 
-    return size
+    return size, errors
 
 
 # two main functions: append size information to appropriate column (scandate), and add rows for new directories
@@ -93,7 +104,7 @@ def write_to_log(dirSizes, scanDate, logName, logDir):
         curDir = row.split(",")[0]
         # append new scan date as new column header to first row
         if curDir == 'Directory':
-            row += str((scanDate))
+            row += str(scanDate)
             new_rows_list.append(row)
 
             # count number of commas in header to determine how many scans have happened
