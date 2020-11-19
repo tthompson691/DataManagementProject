@@ -1,5 +1,6 @@
 
 from matplotlib import pyplot as plt
+from matplotlib.figure import Figure
 import csv, os
 
 plt.style.use("fivethirtyeight")
@@ -23,7 +24,7 @@ def make_pie_chart(data, top_dir, scanDate):
         # true if passed any directory lower than a top letter drive
         top_folder = top_dir.split('\\')[-1]
 
-    print(top_folder)
+    #print(top_folder)
     # first, parse data to prepare it for plotting
     with open(data, 'r') as data:
         reader = csv.DictReader(data)
@@ -31,7 +32,7 @@ def make_pie_chart(data, top_dir, scanDate):
         for row in reader:
             if row["Directory"].split("\\")[-2] == top_folder and row["Directory"] != (top_folder + '\\'):
                 labels.append(row["Directory"])
-                print(row["Directory"])
+                #print(row["Directory"])
                 values.append(int(row[scanDate]))
 
     # remove values less than 10% of max and lump them into one "other" category
@@ -74,10 +75,14 @@ def make_pie_chart(data, top_dir, scanDate):
     displayed_labels.append("Files: " + str(format_bytes(f_size)))
     displayed_vals.append(f_size)
 
-    plt.pie(displayed_vals, labels=displayed_labels)
-    plt.title("Breakdown: " + top_folder)
-    plt.show()
+    fig = Figure()
+    p = fig.add_subplot(111)
 
+    p.pie(displayed_vals, labels=displayed_labels)
+    plt.title("Breakdown: " + top_folder)
+    # plt.show()
+
+    return fig
 
 def make_line_chart(data, top_dir):
 

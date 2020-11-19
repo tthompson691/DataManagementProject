@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23a1477f-2917-4709-9f4e-6b789e6fe06c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mainGUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -30,10 +31,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../classPractice/oop.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tkinterPractice/buttons.py" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.mainGUI">
     <configuration name="graphs" type="PythonConfigurationType" factoryName="Python">
       <module name="DataManagementProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -76,8 +77,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="mainGUI" type="PythonConfigurationType" factoryName="Python">
+      <module name="DataManagementProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\tthom\anaconda3\envs\DataManagementProject\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mainGUI.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.mainGUI" />
       <item itemvalue="Python.graphs" />
     </list>
   </component>
@@ -108,11 +131,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fixed the newLog read error!" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="71" y="266" width="1092" height="738" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605368011542">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="94" y="358" width="1092" height="762" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605742024719">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="71" y="266" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605368011542" />
-    <state x="94" y="358" width="1092" height="738" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1605200007556" />
+    <state x="94" y="358" width="1092" height="762" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1605742024719" />
     <state x="415" y="506" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601586033529">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -125,30 +148,31 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="267" y="272" key="CommitChangelistDialog2/0.0.2560.1400@0.0.2560.1400" timestamp="1605105893171" />
-    <state x="420" y="458" key="FileChooserDialogImpl" timestamp="1605223149420">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="315" y="340" key="FileChooserDialogImpl" timestamp="1605797929073">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="420" y="458" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1605223149420" />
-    <state width="1234" height="299" key="GridCell.Tab.0.bottom" timestamp="1605727102764">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="315" y="340" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605797929073" />
+    <state x="420" y="458" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1605742023295" />
+    <state width="936" height="206" key="GridCell.Tab.0.bottom" timestamp="1605810137984">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="936" height="209" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605375480840" />
-    <state width="1234" height="299" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1605727102764" />
-    <state width="1234" height="299" key="GridCell.Tab.0.center" timestamp="1605727102764">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="936" height="206" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605810137984" />
+    <state width="1215" height="299" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1605793885025" />
+    <state width="936" height="206" key="GridCell.Tab.0.center" timestamp="1605810137983">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="936" height="209" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605375480840" />
-    <state width="1234" height="299" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1605727102764" />
-    <state width="1234" height="299" key="GridCell.Tab.0.left" timestamp="1605727102764">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="936" height="206" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605810137983" />
+    <state width="1215" height="299" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1605793885025" />
+    <state width="936" height="206" key="GridCell.Tab.0.left" timestamp="1605810137983">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="936" height="209" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605375480839" />
-    <state width="1234" height="299" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1605727102764" />
-    <state width="1234" height="299" key="GridCell.Tab.0.right" timestamp="1605727102764">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="936" height="206" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605810137983" />
+    <state width="1215" height="299" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1605793885025" />
+    <state width="936" height="206" key="GridCell.Tab.0.right" timestamp="1605810137984">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="936" height="209" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605375480840" />
-    <state width="1234" height="299" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1605727102764" />
+    <state width="936" height="206" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605810137984" />
+    <state width="1215" height="299" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1605793885025" />
     <state width="936" height="347" key="GridCell.Tab.1.bottom" timestamp="1602863275280">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

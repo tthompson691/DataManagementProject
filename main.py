@@ -2,12 +2,12 @@ import os, csv
 from datetime import datetime
 import graphs
 
-def main():
+def main(directory):
 
     # first step is to check if a .csv log file exists, and if not,
     # create a new .csv file in which info obtained from the directory walk
     # will be stored
-    scanDir = 'C:\\'
+    scanDir = directory
     # if top_dir is a lettered drive, its naming convention will end in a slash. But if any other folder is chosen,
     # this isn't true. Since the log is parsed using slashes as split anchors, must account for this
 
@@ -58,7 +58,7 @@ def main():
 
     print("Scan finished with " + str(totalErrors) + " errors.")
 
-    
+    return logName, scanDate
 
 def get_folder_size(dir):
     # this function will iterate through all files and subdirectories of the given directory and calculate a
@@ -148,5 +148,5 @@ def count_scans(row):
     return scanCount
 
 
-main()
+# main('D:\Game Making')
 
