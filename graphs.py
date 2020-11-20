@@ -24,13 +24,16 @@ def make_pie_chart(data, top_dir, scanDate):
         # true if passed any directory lower than a top letter drive
         top_folder = top_dir.split('\\')[-1]
 
+    # turn top_dir into list for easy checking
+    top_dir_list = top_dir.split('\\')
+
     #print(top_folder)
     # first, parse data to prepare it for plotting
     with open(data, 'r') as data:
         reader = csv.DictReader(data)
 
         for row in reader:
-            if row["Directory"].split("\\")[-2] == top_folder and row["Directory"] != (top_folder + '\\'):
+            if row["Directory"].split("\\")[:-1] == top_dir_list:
                 labels.append(row["Directory"])
                 #print(row["Directory"])
                 values.append(int(row[scanDate]))

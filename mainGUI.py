@@ -9,6 +9,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 root = Tk()
 
 launch_frame = Frame(root)
+button_frame = Frame(root)
+graph_frame = Frame(root, height=1000, width=1200)
 
 t = Text(master=launch_frame, height=1, width=30)
 
@@ -17,6 +19,7 @@ mainButton = Button(master=launch_frame, text="SCAN!", state=DISABLED)
 
 # select directory button
 dirButton = Button(master=launch_frame, text="Select scan directory...", command=lambda: get_directory(t, mainButton))
+
 
 def get_directory(text, mainButton):
     # first clear form if it already has text
@@ -46,23 +49,38 @@ def scan_and_display(directory):
 
 
 def display(directory, data, scan_date):
-    graph_frame = Frame(root, height=1000, width=1200)
+    # first clear the graphs area of any existing graphs
+    for graph in graph_frame.winfo_children():
+        graph.destroy()
 
+    print("early: ", directory)
     dataset1 = Dataset(data, directory, scan_date, graph_frame)
 
     # create a pie chart, and store the subdirectories for easy button navigation
     sub_dirs = dataset1.pie_chart()
+
+    # also create line chart to display the drive's history
     dataset1.line_chart()
-    graph_frame.grid(row=0, column=2)
 
-    button_frame = Frame(root)
+    # if nav buttons already exist, clear them out to make room for new set of buttons
+    for button in button_frame.winfo_children():
+        button.destroy()
 
+    # create buttons to easily jump to a subdirectory breakdown
     r = 0
-    for item in sub_dirs:
-        Button(master=button_frame, text=item).grid(column=3, row=r)
+    for item in sub_dirs[:-2]:
+        # extract names of subdirectories and create full directory names to pass to buttons
+        # skip the "files" and "other" labels (will always be the last two)
+        dirname = item.split(":")[0]
+        fulldir = directory + '\\' + dirname
+        print("button creation:", fulldir)
+        b = Nav_button(button_frame, item, fulldir, data, scan_date).create()
+        b.grid(column=3, row=r)
+
         r += 1
 
     button_frame.grid(row=0, column=3)
+
 
 class Dataset:
     def __init__(self, data, directory, scan_date, frame):
@@ -91,6 +109,17 @@ class Dataset:
         self.canvas2.get_tk_widget().pack()
 
 
+class Nav_button:
+    def __init__(self, frame, text, fulldir, data, scan_date):
+        self.frame = frame
+        self.text = text
+        self.fulldir = fulldir
+        self.data = data
+        self.scan_date = scan_date
+
+    def create(self):
+        return Button(master=self.frame, text=self.text, command=lambda: display(self.fulldir, self.data,
+                                                                                 self.scan_date))
 
 # dirButton.pack()
 # mainButton.pack()
@@ -100,5 +129,6 @@ dirButton.grid(row=0, column=0)
 mainButton.grid(row=1, column=0)
 t.grid(row=0, column=1)
 launch_frame.grid(row=0, column=0)
+graph_frame.grid(row=0, column=2)
 
 root.mainloop()
