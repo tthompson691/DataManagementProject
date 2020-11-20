@@ -21,6 +21,7 @@ def main(directory):
     logDir = 'D:\SYSTEM SCAN LOGS'
     os.chdir(logDir)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
+    fullLogName = logDir + '\\' + logName
 
     date = datetime.now()
     scanDate = date.strftime("%b-%d-%Y __ %Hh %Mm %Ss")
@@ -58,7 +59,7 @@ def main(directory):
 
     print("Scan finished with " + str(totalErrors) + " errors.")
 
-    return logName, scanDate
+    return fullLogName, scanDate
 
 def get_folder_size(dir):
     # this function will iterate through all files and subdirectories of the given directory and calculate a

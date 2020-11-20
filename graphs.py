@@ -82,12 +82,20 @@ def make_pie_chart(data, top_dir, scanDate):
     plt.title("Breakdown: " + top_folder)
     # plt.show()
 
-    return fig
+    return fig, displayed_labels
+
 
 def make_line_chart(data, top_dir):
 
     display_vals = []
     display_labels = []
+
+    if top_dir.split('\\')[-1] == '':
+        # true if passed a letter drive as top_dir
+        top_folder = top_dir.split('\\')[-2]
+    else:
+        # true if passed any directory lower than a top letter drive
+        top_folder = top_dir.split('\\')[-1]
 
     with open(data, 'r') as data:
         reader = csv.DictReader(data)
@@ -98,11 +106,18 @@ def make_line_chart(data, top_dir):
                     display_vals.append(row[item])
                     display_labels.append(item)
 
-    plt.plot(display_labels, display_vals)
-    plt.title("History: " + top_dir)
-    plt.xlabel('Size (bytes)')
-    plt.ylabel('Scan Date')
-    plt.show()
+    fig = Figure()
+
+    p = fig.add_subplot(111)
+
+    p.plot(display_labels, display_vals)
+
+    # p.title("History: " + top_folder)
+    # p.xlabel('Size (bytes)')
+    # p.ylabel('Scan Date')
+    # plt.show()
+
+    return fig
 
 
 def format_bytes(size):
