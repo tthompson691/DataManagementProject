@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 import csv, os
 
+
 plt.style.use("fivethirtyeight")
 
 
@@ -11,31 +12,13 @@ def make_pie_chart(data, top_dir, scanDate):
     labels = []
     values = []
 
-    # extract string of top folder for later reference
-    # example: if top_dir is D:\Music\Projects, extract "Projects"
-
-    # if top_dir is a lettered drive, its naming convention will end in a slash. But if any other folder is chosen,
-    # this isn't true. Since the log is parsed using slashes as split anchors, must account for this
-
-    if top_dir.split('\\')[-1] == '':
-        # true if passed a letter drive as top_dir
-        top_folder = top_dir.split('\\')[-2]
-    else:
-        # true if passed any directory lower than a top letter drive
-        top_folder = top_dir.split('\\')[-1]
-
-    # turn top_dir into list for easy checking
-    top_dir_list = top_dir.split('\\')
-
-    #print(top_folder)
     # first, parse data to prepare it for plotting
     with open(data, 'r') as data:
         reader = csv.DictReader(data)
 
         for row in reader:
-            if row["Directory"].split("\\")[:-1] == top_dir_list:
+            if os.path.dirname(row["Directory"]) == top_dir and row["Directory"] != top_dir:
                 labels.append(row["Directory"])
-                #print(row["Directory"])
                 values.append(int(row[scanDate]))
 
     # remove values less than 10% of max and lump them into one "other" category
@@ -46,7 +29,11 @@ def make_pie_chart(data, top_dir, scanDate):
     others_sum = 0
     i = 0
 
+    # if [values] is empty, that means the current directory only has files in it
+    # try:
     max_size = max(values)
+    # except ValueError:
+    #     return
 
     for value in values:
         if value < max_size / 10:
@@ -57,7 +44,7 @@ def make_pie_chart(data, top_dir, scanDate):
             displayed_vals.append(value)
             # convert size values to more legible GB,MB,KB etc values
             label_value = format_bytes(value)
-            displayed_labels.append(labels[i].split("\\")[-1] + ": " + str(label_value))
+            displayed_labels.append(labels[i].split("/")[-1] + ": " + str(label_value))
 
         i += 1
 
@@ -77,13 +64,14 @@ def make_pie_chart(data, top_dir, scanDate):
 
     displayed_labels.append("Files: " + str(format_bytes(f_size)))
     displayed_vals.append(f_size)
-
+    print(displayed_labels)
+    print(displayed_vals)
     fig = Figure()
     p = fig.add_subplot(111)
 
     p.pie(displayed_vals, labels=displayed_labels)
-    plt.title("Breakdown: " + top_folder)
-    # plt.show()
+    #plt.title("Breakdown: " + top_folder)
+    #p.show()
 
     return fig, displayed_labels
 
@@ -92,13 +80,6 @@ def make_line_chart(data, top_dir):
 
     display_vals = []
     display_labels = []
-
-    if top_dir.split('\\')[-1] == '':
-        # true if passed a letter drive as top_dir
-        top_folder = top_dir.split('\\')[-2]
-    else:
-        # true if passed any directory lower than a top letter drive
-        top_folder = top_dir.split('\\')[-1]
 
     with open(data, 'r') as data:
         reader = csv.DictReader(data)
@@ -134,7 +115,7 @@ def format_bytes(size):
         return size
 
 
-#make_pie_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - .csv', 'C:\\Users\\tthom', 'Nov-17-2020 __ 11h 32m 41s')
+# make_pie_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - D.csv', 'D:\\', 'Nov-18-2020 __ 12h 52m 06s')
 
 #make_line_chart('D:\SYSTEM SCAN LOGS\MASTER SYSTEM SCAN LOG - .csv', 'C:\\')
 

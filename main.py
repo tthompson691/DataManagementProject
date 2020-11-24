@@ -2,6 +2,7 @@ import os, csv
 from datetime import datetime
 import graphs
 
+
 def main(directory):
 
     # first step is to check if a .csv log file exists, and if not,
@@ -11,17 +12,19 @@ def main(directory):
     # if top_dir is a lettered drive, its naming convention will end in a slash. But if any other folder is chosen,
     # this isn't true. Since the log is parsed using slashes as split anchors, must account for this
 
+    scanName = os.path.dirname(scanDir)
+
     if scanDir.split('\\')[-1] == '':
         # true if passed a letter drive as top_dir
-        scanName = scanDir.split(':\\')[-2]
+        scanName = scanDir.split(':/')[-2]
     else:
         # true if passed any directory lower than a top letter drive
-        scanName = scanDir.split('\\')[-1]
+        scanName = scanDir.split('/')[-1]
 
-    logDir = 'D:\SYSTEM SCAN LOGS'
+    logDir = 'D:/SYSTEM SCAN LOGS'
     os.chdir(logDir)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
-    fullLogName = logDir + '\\' + logName
+    fullLogName = logDir + '/' + logName
 
     date = datetime.now()
     scanDate = date.strftime("%b-%d-%Y __ %Hh %Mm %Ss")
@@ -47,7 +50,7 @@ def main(directory):
         # total size
         size, errors = get_folder_size(dirpath)
         totalErrors += errors
-        dirSizes[dirpath] = size
+        dirSizes[dirpath.replace('\\', '/')] = size
 
 
     # write to the CSV file
