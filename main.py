@@ -14,13 +14,13 @@ def main(directory):
 
     scanName = os.path.dirname(scanDir)
 
-    if scanDir.split('\\')[-1] == '':
+    if scanDir.split('/')[-1] == '':
         # true if passed a letter drive as top_dir
         scanName = scanDir.split(':/')[-2]
     else:
         # true if passed any directory lower than a top letter drive
         scanName = scanDir.split('/')[-1]
-
+    print("Scanname: ", scanName)
     logDir = 'D:/SYSTEM SCAN LOGS'
     os.chdir(logDir)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
@@ -63,6 +63,7 @@ def main(directory):
     print("Scan finished with " + str(totalErrors) + " errors.")
 
     return fullLogName, scanDate
+
 
 def get_folder_size(dir):
     # this function will iterate through all files and subdirectories of the given directory and calculate a

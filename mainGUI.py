@@ -1,5 +1,7 @@
 from tkinter import filedialog
 from tkinter import *
+from tkinter import ttk
+import time
 from main import main
 import graphs
 from matplotlib.figure import Figure
@@ -12,39 +14,48 @@ launch_frame = Frame(root)
 button_frame = Frame(root)
 graph_frame = Frame(root, height=1000, width=1200)
 
+log_text = Text(master=launch_frame, height=1, width=25)
+
 t = Text(master=launch_frame, height=1, width=25)
+
+
 
 # main scan button
 mainButton = Button(master=launch_frame, text="SCAN!", state=DISABLED, width=50, height=10)
 
 # select directory button
-dirButton = Button(master=launch_frame, text="Select scan directory...", command=lambda: get_directory(t, mainButton))
+dirButton = Button(master=launch_frame, text="Select scan directory...", command=lambda: get_directory(t))
+
+logDirButton = Button(master=launch_frame, text='Select log storage location...',
+                      command=lambda: get_directory(log_text))
 
 
-def get_directory(text, mainButton):
+def get_directory(text):
     # first clear form if it already has text
     try:
         text.delete("1.0", END)
     except AttributeError:
         pass
 
-    # directory = filedialog.askdirectory().replace('/', '\\')
     directory = filedialog.askdirectory()
-    print(directory)
     text.insert(END, directory)
 
-    # on the off chance the user just cancels out the file explorer dialogue, keep scan button disabled
-    if text.get("1.0", END) != '\n':
+    # disable scan button until user has given necessary info to run (log storage location, scan directory)
+    enable_scan_button(log_text, t, directory)
+
+    return directory
+
+
+def enable_scan_button(logText, dirText, directory):
+    if logText.get("1.0", END) != '\n' and dirText.get('1.0', END) != '\n':
         mainButton['state'] = NORMAL
         mainButton['command'] = lambda: scan_and_display(directory)
     else:
         mainButton['state'] = DISABLED
 
-    return directory
-
 
 def scan_and_display(directory):
-    # runs the main scan function
+    # runs the main scan function. Passes scan_directory and log_directory arguments
     data, scanDate = main(directory)
     display(directory, data, scanDate)
 
@@ -75,22 +86,35 @@ def display(directory, data, scan_date):
         # extract names of subdirectories and create full directory names to pass to buttons
         # skip the "files" and "other" labels (will always be the last two)
         dirname = item.split(":")[0]
-        fulldir = directory + '/' + dirname
-        print("button creation:", fulldir)
+
+        if directory[-1] == '/':
+            fulldir = directory + dirname
+        else:
+            fulldir = directory + '/' + dirname
+
+        # print("button creation:", fulldir)
         b = Nav_button(button_frame, item, fulldir, data, scan_date).create()
         b.grid(column=3, row=r)
 
         r += 1
 
-    # create back button
-    back_dir_list = fulldir.split('/')[:-2]
-    separator = '/'
-    back_dir = separator.join(back_dir_list)
+    # create back button. Try/except will ensure a back button is only created if user navigates
+    # forward in the first place
+    try:
+        back_dir_list = fulldir.split('/')[:-2]
+        separator = '/'
+        back_dir = separator.join(back_dir_list)
 
-    print("backdir:", back_dir)
+        # account for letter drive naming quirk
+        if back_dir[-1] == ':':
+            back_dir += '/'
 
-    back = Nav_button(button_frame, "Back", back_dir, data, scan_date).create()
-    back.grid(column=3, row=r)
+        # print("backdir:", back_dir)
+
+        back = Nav_button(button_frame, "Back", back_dir, data, scan_date).create()
+        back.grid(column=3, row=r)
+    except IndexError:
+        pass
 
     button_frame.grid(row=0, column=3)
 
@@ -141,6 +165,9 @@ class Nav_button:
 # dirButton.pack()
 # mainButton.pack()
 # t.pack()
+
+logDirButton.pack(side=TOP, anchor=NW)
+log_text.pack(side=TOP, anchor=NE)
 
 dirButton.pack(side=TOP, anchor=NW)
 t.pack(side=TOP, anchor=NE)

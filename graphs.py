@@ -38,7 +38,7 @@ def make_pie_chart(data, top_dir, scanDate):
     for value in values:
         if value < max_size / 10:
             others.append(value)
-            others_labels.append(labels[i].split("\\")[-1])
+            others_labels.append(labels[i].split("/")[-1])
             others_sum += value
         else:
             displayed_vals.append(value)
@@ -67,6 +67,7 @@ def make_pie_chart(data, top_dir, scanDate):
     print(displayed_labels)
     print(displayed_vals)
     fig = Figure()
+    fig.suptitle(("Breakdown: " + str(top_dir)))
     p = fig.add_subplot(111)
 
     p.pie(displayed_vals, labels=displayed_labels)
