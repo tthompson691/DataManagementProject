@@ -41,23 +41,27 @@ def get_directory(text):
     text.insert(END, directory)
 
     # disable scan button until user has given necessary info to run (log storage location, scan directory)
-    enable_scan_button(log_text, t, directory)
+    enable_scan_button(log_text, t)
 
     return directory
 
 
-def enable_scan_button(logText, dirText, directory):
+def enable_scan_button(logText, dirText):
     if logText.get("1.0", END) != '\n' and dirText.get('1.0', END) != '\n':
         mainButton['state'] = NORMAL
-        mainButton['command'] = lambda: scan_and_display(directory)
+        mainButton['command'] = lambda: scan_and_display()
     else:
         mainButton['state'] = DISABLED
 
 
-def scan_and_display(directory):
+def scan_and_display():
+    # get scan directory and log directory from text fields
+    log_directory = log_text.get("1.0", END)[:-1]
+    scan_directory = t.get("1.0", END)[:-1]
+
     # runs the main scan function. Passes scan_directory and log_directory arguments
-    data, scanDate = main(directory)
-    display(directory, data, scanDate)
+    data, scanDate = main(log_directory, scan_directory)
+    display(scan_directory, data, scanDate)
 
 
 def display(directory, data, scan_date):

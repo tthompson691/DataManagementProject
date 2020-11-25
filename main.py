@@ -3,15 +3,16 @@ from datetime import datetime
 import graphs
 
 
-def main(directory):
+def main(log_directory, scan_directory):
 
     # first step is to check if a .csv log file exists, and if not,
     # create a new .csv file in which info obtained from the directory walk
     # will be stored
-    scanDir = directory
+    scanDir = scan_directory
     # if top_dir is a lettered drive, its naming convention will end in a slash. But if any other folder is chosen,
     # this isn't true. Since the log is parsed using slashes as split anchors, must account for this
-
+    print("LOG DIRECTORY:", log_directory)
+    print("SCAN DIRECTORY:", scan_directory)
     scanName = os.path.dirname(scanDir)
 
     if scanDir.split('/')[-1] == '':
@@ -21,16 +22,16 @@ def main(directory):
         # true if passed any directory lower than a top letter drive
         scanName = scanDir.split('/')[-1]
     print("Scanname: ", scanName)
-    logDir = 'D:/SYSTEM SCAN LOGS'
-    os.chdir(logDir)
+
+    os.chdir(log_directory)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
-    fullLogName = logDir + '/' + logName
+    fullLogName = log_directory + '/' + logName
 
     date = datetime.now()
     scanDate = date.strftime("%b-%d-%Y __ %Hh %Mm %Ss")
 
     # if this is first execution of the program, we must instantiate the master log file
-    for dirpath, dirnames, filenames in os.walk(logDir):
+    for dirpath, dirnames, filenames in os.walk(log_directory):
         if logName not in filenames:
             # only true on first program execution. Create .csv file and add its first header, "Directory"
             logFile = open(logName, 'x')
@@ -55,7 +56,7 @@ def main(directory):
 
     # write to the CSV file
     try:
-        write_to_log(dirSizes, scanDate, logName, logDir)
+        write_to_log(dirSizes, scanDate, logName, log_directory)
     except PermissionError:
         print("Scan log is open. Close it and re-run the scanner")
         return 1
