@@ -30,11 +30,13 @@ def make_pie_chart(data, top_dir, scanDate):
     i = 0
 
     # if [values] is empty, that means the current directory only has files in it
-    # try:
-    max_size = max(values)
-    # except ValueError:
-    #     return
+    try:
+        max_size = max(values)
+    except ValueError:
+        pass
 
+    # to avoid overly messy chart, only display folders that are >10% of the largest folder's size. All other folders
+    # will be lumped into the "others" category
     for value in values:
         if value < max_size / 10:
             others.append(value)

@@ -29,6 +29,7 @@ dirButton = Button(master=launch_frame, text="Select scan directory...", command
 logDirButton = Button(master=launch_frame, text='Select log storage location...',
                       command=lambda: get_directory(log_text))
 
+nav_history = []
 
 def get_directory(text):
     # first clear form if it already has text
@@ -38,6 +39,8 @@ def get_directory(text):
         pass
 
     directory = filedialog.askdirectory()
+    # store the first directory for later specific reference
+
     text.insert(END, directory)
 
     # disable scan button until user has given necessary info to run (log storage location, scan directory)
@@ -59,12 +62,15 @@ def scan_and_display():
     log_directory = log_text.get("1.0", END)[:-1]
     scan_directory = t.get("1.0", END)[:-1]
 
+    # store the initial scan directory for later reference
+    top_dir = scan_directory
+
     # runs the main scan function. Passes scan_directory and log_directory arguments
     data, scanDate = main(log_directory, scan_directory)
-    display(scan_directory, data, scanDate)
+    display(scan_directory, data, scanDate, top_dir)
 
 
-def display(directory, data, scan_date):
+def display(directory, data, scan_date, top_dir):
     # first clear the graphs area of any existing graphs
     for graph in graph_frame.winfo_children():
         graph.destroy()
@@ -72,6 +78,10 @@ def display(directory, data, scan_date):
     print("early: ", directory)
     print("data: ", data)
     print("scan_date: ", scan_date)
+
+    # add current directory to nav_history, for later reference to back_button
+    nav_history.append(directory)
+
     dataset1 = Dataset(data, directory, scan_date, graph_frame)
 
     # create a pie chart, and store the subdirectories for easy button navigation
@@ -97,17 +107,17 @@ def display(directory, data, scan_date):
             fulldir = directory + '/' + dirname
 
         # print("button creation:", fulldir)
-        b = Nav_button(button_frame, item, fulldir, data, scan_date).create()
+        b = Nav_button(button_frame, item, fulldir, data, scan_date, top_dir).create()
         b.grid(column=3, row=r)
 
         r += 1
 
-    # create back button. Try/except will ensure a back button is only created if user navigates
-    # forward in the first place
-    try:
-        back_dir_list = fulldir.split('/')[:-2]
+    # create back button. Ensure it's only available if it makes sense
+    if top_dir != directory:
+        back_dir_list = directory.split('/')[:-2]
         separator = '/'
         back_dir = separator.join(back_dir_list)
+        print("BACK_DIR:", back_dir)
 
         # account for letter drive naming quirk
         if back_dir[-1] == ':':
@@ -115,10 +125,8 @@ def display(directory, data, scan_date):
 
         # print("backdir:", back_dir)
 
-        back = Nav_button(button_frame, "Back", back_dir, data, scan_date).create()
+        back = Nav_button(button_frame, "Back", back_dir, data, scan_date, top_dir).create()
         back.grid(column=3, row=r)
-    except IndexError:
-        pass
 
     button_frame.grid(row=0, column=3)
 
@@ -155,16 +163,17 @@ class Dataset:
 
 
 class Nav_button:
-    def __init__(self, frame, text, fulldir, data, scan_date):
+    def __init__(self, frame, text, fulldir, data, scan_date, top_dir):
         self.frame = frame
         self.text = text
         self.fulldir = fulldir
         self.data = data
         self.scan_date = scan_date
+        self.top_dir = top_dir
 
     def create(self):
         return Button(master=self.frame, text=self.text,
-                      command=lambda: display(self.fulldir, self.data, self.scan_date))
+                      command=lambda: display(self.fulldir, self.data, self.scan_date, self.top_dir))
 
 # dirButton.pack()
 # mainButton.pack()
