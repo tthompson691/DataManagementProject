@@ -1,6 +1,6 @@
 ~~~SPOTLIGHT~~~
 
-As a full time musician and music producer, I am constantly creating and working with a huge amount of uncompressed media files. This
+As a musician and music producer, I am constantly creating and working with a huge amount of uncompressed media files. This
 means that I am constantly battling hard drive space issues as all these media files quickly fill up my drive. Upon looking through
 my drive, it actually has proven to be quite challenging to locate where all these automatically-saved media files are stored. The
 plethora of different softwares and project directories I utilize means that most of this media is stored quite deep down in
