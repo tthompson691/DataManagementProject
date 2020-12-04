@@ -13,10 +13,6 @@ launch_frame = Frame(root)
 button_frame = Frame(root)
 graph_frame = Frame(root, height=1000, width=1200)
 
-# spotlight logo
-logo = ImageTk.PhotoImage(Image.open("spotlight logo.png"))
-label = Label(launch_frame, image=logo)
-label.grid(row=0, column=0, columnspan=2)
 
 # log directory button/text
 logDirButton = Button(master=launch_frame, text='Select log storage location...',
@@ -42,6 +38,7 @@ mainButton.grid(row=3, column=0, columnspan=2)
 progress = Progressbar(launch_frame, orient=HORIZONTAL, length=100, mode='indeterminate')
 progress.grid(row=4, column=0, columnspan=2)
 
+launch_frame.grid(row=0, column=0, sticky=NW)
 
 nav_history = []
 
@@ -201,10 +198,6 @@ class Nav_button:
     def create(self):
         return Button(master=self.frame, text=self.text,
                       command=lambda: display(self.fulldir, self.data, self.scan_date, self.top_dir))
-
-
-
-launch_frame.grid(row=0, column=0, sticky=NW)
 
 
 root.mainloop()

@@ -1,11 +1,12 @@
 
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib import rcParams
 import csv, os
 
 
 plt.style.use("fivethirtyeight")
-
+# rcParams.update({'figure.autolayout': True})
 
 def make_pie_chart(data, top_dir, scanDate):
 
@@ -66,15 +67,11 @@ def make_pie_chart(data, top_dir, scanDate):
 
     displayed_labels.append("Files: " + str(format_bytes(f_size)))
     displayed_vals.append(f_size)
-    print(displayed_labels)
-    print(displayed_vals)
+
     fig = Figure()
     fig.suptitle(("Breakdown: " + str(top_dir)))
     p = fig.add_subplot(111)
-
     p.pie(displayed_vals, labels=displayed_labels)
-    #plt.title("Breakdown: " + top_folder)
-    #p.show()
 
     return fig, displayed_labels
 

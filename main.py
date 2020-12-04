@@ -21,7 +21,6 @@ def main(log_directory, scan_directory):
     else:
         # true if passed any directory lower than a top letter drive
         scanName = scanDir.split('/')[-1]
-    print("Scanname: ", scanName)
 
     os.chdir(log_directory)
     logName = "MASTER SYSTEM SCAN LOG - " + scanName + ".csv"
@@ -44,7 +43,6 @@ def main(log_directory, scan_directory):
 
     dirSizes = {}
     totalErrors = 0
-    i = 0
 
     for dirpath, dirnames, filenames in os.walk(scanDir):
         # calls method which will walk through the given directory and calculate
@@ -133,8 +131,6 @@ def write_to_log(dirSizes, scanDate, logName, logDir):
         new_rows_list.append(str(key) + (scanCount * ",") + str(value))
         new_dirs.append(key)
 
-    #print("new dirs:", new_dirs)
-    #print("deleted dirs:", deleted_dirs)
 
     # write data into csv
     with open(logName, 'w') as logFile:
@@ -153,6 +149,4 @@ def count_scans(row):
 
     return scanCount
 
-
-# main('D:\Game Making')
 
