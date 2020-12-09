@@ -1,6 +1,6 @@
 import os, csv
 from datetime import datetime
-import graphs
+import threading, queue
 
 
 def main(log_directory, scan_directory):
@@ -60,6 +60,9 @@ def main(log_directory, scan_directory):
         return 1
 
     print("Scan finished with " + str(totalErrors) + " errors.")
+
+    # q.put((fullLogName, scanDate))
+
 
     return fullLogName, scanDate
 

@@ -5,7 +5,8 @@ from main import main
 import graphs
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from PIL import ImageTk, Image
-import threading
+import threading, queue
+from multiprocessing import Process
 
 root = Tk()
 
@@ -37,13 +38,19 @@ t.grid(row=2, column=1)
 mainButton = Button(master=launch_frame, text="SCAN!", state=DISABLED,
                     width=50, height=10, bg='#27b355')
 mainButton.grid(row=3, column=0, columnspan=2)
+# thread the main() function called by the scan button
+
 
 # progress bar
 progress = Progressbar(launch_frame, orient=HORIZONTAL, length=100, mode='indeterminate')
 progress.grid(row=4, column=0, columnspan=2)
 
+# set up threading
+q = queue.Queue()
+
 
 nav_history = []
+
 
 def get_directory(text):
     # first clear form if it already has text
@@ -72,23 +79,24 @@ def enable_scan_button(logText, dirText):
 
 
 def scan_and_display():
-
-    threading.Thread(target=bar_start).start()
     # get scan directory and log directory from text fields
     log_directory = log_text.get("1.0", END)[:-1]
     scan_directory = t.get("1.0", END)[:-1]
 
     # store the initial scan directory for later reference
-    top_dir = scan_directory
+    th = threading.Thread(target=bar_start, args=(log_directory, scan_directory))
+    th.start()
+    progress.start()
 
     # runs the main scan function. Passes scan_directory and log_directory arguments
-    data, scanDate = main(log_directory, scan_directory)
-    display(scan_directory, data, scanDate, top_dir)
+    # data, scanDate = main(log_directory, scan_directory)
+
     # bar_stop()
 
 
 def display(directory, data, scan_date, top_dir):
     # first clear the graphs area of any existing graphs
+    print("DISPLAY CALLED")
     graph_frame.grid(row=0, column=2, sticky="ensw")
     for graph in graph_frame.winfo_children():
         graph.destroy()
@@ -150,13 +158,14 @@ def display(directory, data, scan_date, top_dir):
     button_frame.grid(row=0, column=3, sticky=E)
 
 
-def bar_start():
+def bar_start(log_directory, scan_directory):
     print("BAR START CALLED")
-    progress.start(10)
-
-
-def bar_stop():
+    top_dir = scan_directory
+    progress.start(5)
+    data, scanDate = main(log_directory, scan_directory)
+    display(scan_directory, data, scanDate, top_dir)
     progress.stop()
+
 
 class Dataset:
     def __init__(self, data, directory, scan_date, frame):

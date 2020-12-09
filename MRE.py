@@ -148,12 +148,12 @@ def display(directory, data, scan_date, top_dir):
 
 
 def bar_start():
-    print("BAR START CALLED")
     progress.start(10)
 
 
 def bar_stop():
     progress.stop()
+
 
 class Dataset:
     def __init__(self, data, directory, scan_date, frame):
