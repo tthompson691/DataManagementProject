@@ -73,7 +73,7 @@ def enable_scan_button(logText, dirText):
 
 def scan_and_display():
 
-    threading.Thread(target=bar_start).start()
+    # threading.Thread(target=bar_start).start()
     # get scan directory and log directory from text fields
     log_directory = log_text.get("1.0", END)[:-1]
     scan_directory = t.get("1.0", END)[:-1]
